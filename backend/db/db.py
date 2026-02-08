@@ -64,5 +64,5 @@ def get_db_connection():
     return sqlite3.connect(DB_PATH)
 
 
-create_db_items()
+#create_db_items()
 #get_db_connection()

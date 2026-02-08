@@ -1,6 +1,8 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 
+from db.db_helpers import retrieve_db_items
+
 app = FastAPI(title="CI/CD Demo API")
 
 # In-memory "database"
@@ -25,7 +27,10 @@ def health_check():
 
 @app.get("/items", response_model=list[ItemOut])
 def list_items():
-    return list(items_db.values())
+    food_items = retrieve_db_items()
+    print("Food items from DB:", food_items)
+
+    return food_items
 
 
 @app.post("/items", response_model=ItemOut, status_code=status.HTTP_201_CREATED)
