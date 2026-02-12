@@ -2,14 +2,18 @@ import sqlite3
 import os
 from pathlib import Path
 
-DB_PATH = Path(__file__).parent / "database.db"
-print("DB_PATH:", DB_PATH.resolve())
+DEFAULT_DB_PATH = Path(__file__).parent / "database.db"
+
+
+def get_db_path() -> Path:
+    """Return the current DB path, checking env var each time."""
+    return Path(os.environ.get("DB_PATH", str(DEFAULT_DB_PATH)))
 
 
 def init_db() -> None:
     """Initialize  sqlite db with schema."""
     
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
     cursor.execute("""
@@ -30,7 +34,7 @@ def create_db_items():
     # Check if DB exists and has items
     init_db()
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = sqlite3.connect(get_db_path())
     cursor = conn.cursor()
 
     cursor.execute("SELECT COUNT(*) FROM FoodItems")
@@ -58,11 +62,12 @@ def create_db_items():
 
 def get_db_connection():
     """Get a connection to the sqlite db."""
-    if not DB_PATH.exists():
+    db_path = get_db_path()
+    if not db_path.exists():
         print("Database not found, initializing...")
         init_db()
-    return sqlite3.connect(DB_PATH)
+    return sqlite3.connect(db_path)
 
 
-#create_db_items()
+create_db_items()
 #get_db_connection()

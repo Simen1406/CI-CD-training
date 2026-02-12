@@ -13,5 +13,8 @@ class TestClass:
     def test_list_items(self):
         response = client.get("/items")
         assert response.status_code == 200
-        assert isinstance(response.json(), list)
+        assert isinstance(response.json(), list) != None
         
+    def test_create_item(self):
+        response = client.post("/items")
+        assert response.status_code == 201

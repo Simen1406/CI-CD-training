@@ -1,18 +1,17 @@
 from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field
 
-from db.db_helpers import retrieve_db_items
+from db.db_helpers import retrieve_db_items, insert_db_items
 
 app = FastAPI(title="CI/CD Demo API")
 
-# In-memory "database"
-items_db: dict[int, dict] = {}
+
 next_id: int = 1
 
 
 class ItemCreate(BaseModel):
     name: str
-    description: str = ""
+    category: str = ""
     price: float = Field(gt=0)
 
 
@@ -33,17 +32,14 @@ def list_items():
     return food_items
 
 
-@app.post("/items", response_model=ItemOut, status_code=status.HTTP_201_CREATED)
-def create_item(item: ItemCreate):
-    global next_id
-    new_item = {"id": next_id, **item.model_dump()}
-    items_db[next_id] = new_item
-    next_id += 1
-    return new_item
+@app.post("/items", status_code=status.HTTP_201_CREATED)
+def create_item():
+    new_row = insert_db_items()
+    return new_row
 
 
-@app.delete("/items/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
+"""@app.delete("/items/{item_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_item(item_id: int):
     if item_id not in items_db:
         raise HTTPException(status_code=404, detail="Item not found")
-    del items_db[item_id]
+    del items_db[item_id]"""
