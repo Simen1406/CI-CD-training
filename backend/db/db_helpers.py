@@ -23,7 +23,7 @@ def insert_db_items():
     conn = get_db_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM FoodItems")
-    count = cursor.fetchone()[0]
+    #count = cursor.fetchone()[0]
     #next_id = count + 1
 
     #if no items, insert some initial data for testing
