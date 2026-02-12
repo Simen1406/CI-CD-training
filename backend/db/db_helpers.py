@@ -1,5 +1,4 @@
 import sqlite3
-import sys
 from pathlib import Path
 
 from db.db import get_db_connection, get_db_path
