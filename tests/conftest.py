@@ -22,5 +22,3 @@ def use_test_db(tmp_path):
     yield
 
     os.environ.pop("DB_PATH", None)
-
-    os.environ.pop("DB_PATH", None)
