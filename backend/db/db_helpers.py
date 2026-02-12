@@ -1,5 +1,4 @@
 import sqlite3
-from pathlib import Path
 
 from db.db import get_db_connection, get_db_path
 
@@ -25,9 +24,9 @@ def insert_db_items():
     cursor = conn.cursor()
     cursor.execute("SELECT COUNT(*) FROM FoodItems")
     count = cursor.fetchone()[0]
-    next_id = count + 1
+    #next_id = count + 1
 
-        #if no items, insert some initial data for testing
+    #if no items, insert some initial data for testing
     print("Inserting initial items into DB...")
     cursor.execute("INSERT INTO FoodItems (name, category, price) VALUES (?, ?, ?)",
         ("salmon", "fish", 35)
